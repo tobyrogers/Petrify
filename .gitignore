@@ -57,6 +57,7 @@ ipch/
 
 # Mac OSX
 .DS_Store
+test-results/
 
 # ReSharper is a .NET coding add-in
 _ReSharper*
