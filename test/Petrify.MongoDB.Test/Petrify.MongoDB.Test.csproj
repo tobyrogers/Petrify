@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{F264EE03-0C15-44F6-8029-BE1AF9C36AE0}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Petrify.MongoDB</RootNamespace>
+    <AssemblyName>Petrify.MongoDB.Test</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="nunit.framework">
+      <HintPath>..\..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Petrify.MongoDB\Petrify.MongoDB.csproj">
+      <Project>{551B7D8F-69B5-4779-AF75-525A75AB2C13}</Project>
+      <Name>Petrify.MongoDB</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Petrify.Core.Test\Petrify.Core.Test.csproj">
+      <Project>{00BCD6B8-9A2C-4E64-A10A-DB97AB97AA52}</Project>
+      <Name>Petrify.Core.Test</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\Petrify.Core\Petrify.Core.csproj">
+      <Project>{B45DCB7F-C2FB-4F12-8A1D-700418CF3C9F}</Project>
+      <Name>Petrify.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+</Project>

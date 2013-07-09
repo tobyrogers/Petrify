@@ -1,0 +1,42 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Petrify.Core", "src\Petrify.Core\Petrify.Core.csproj", "{B45DCB7F-C2FB-4F12-8A1D-700418CF3C9F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Petrify.MongoDB", "src\Petrify.MongoDB\Petrify.MongoDB.csproj", "{551B7D8F-69B5-4779-AF75-525A75AB2C13}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Petrify.Core.Test", "test\Petrify.Core.Test\Petrify.Core.Test.csproj", "{00BCD6B8-9A2C-4E64-A10A-DB97AB97AA52}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Petrify.MongoDB.Test", "test\Petrify.MongoDB.Test\Petrify.MongoDB.Test.csproj", "{F264EE03-0C15-44F6-8029-BE1AF9C36AE0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{00BCD6B8-9A2C-4E64-A10A-DB97AB97AA52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00BCD6B8-9A2C-4E64-A10A-DB97AB97AA52}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00BCD6B8-9A2C-4E64-A10A-DB97AB97AA52}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00BCD6B8-9A2C-4E64-A10A-DB97AB97AA52}.Release|Any CPU.Build.0 = Release|Any CPU
+		{551B7D8F-69B5-4779-AF75-525A75AB2C13}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{551B7D8F-69B5-4779-AF75-525A75AB2C13}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{551B7D8F-69B5-4779-AF75-525A75AB2C13}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{551B7D8F-69B5-4779-AF75-525A75AB2C13}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B45DCB7F-C2FB-4F12-8A1D-700418CF3C9F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B45DCB7F-C2FB-4F12-8A1D-700418CF3C9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B45DCB7F-C2FB-4F12-8A1D-700418CF3C9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B45DCB7F-C2FB-4F12-8A1D-700418CF3C9F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F264EE03-0C15-44F6-8029-BE1AF9C36AE0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F264EE03-0C15-44F6-8029-BE1AF9C36AE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F264EE03-0C15-44F6-8029-BE1AF9C36AE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F264EE03-0C15-44F6-8029-BE1AF9C36AE0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = src\Petrify.Core\Petrify.Core.csproj
+		Policies = $0
+		$0.DotNetNamingPolicy = $1
+		$1.DirectoryNamespaceAssociation = PrefixedHierarchical
+		$1.ResourceNamePolicy = FileFormatDefault
+	EndGlobalSection
+EndGlobal

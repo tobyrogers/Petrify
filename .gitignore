@@ -52,6 +52,12 @@ ipch/
 # Guidance Automation Toolkit
 *.gpState
 
+# Xamarin Studio
+*.userprefs
+
+# Mac OSX
+.DS_Store
+
 # ReSharper is a .NET coding add-in
 _ReSharper*
 
