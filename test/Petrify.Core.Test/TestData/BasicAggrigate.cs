@@ -20,5 +20,24 @@ namespace Petrify.Core.TestData
 	{
 
 	}
+
+	public class Entity
+	{
+		public Guid Id { get; set; }
+	}
+
+	public class Person : Entity
+	{
+		public virtual string FirstName { get; set; }
+		public virtual string LastName { get; set; }
+		public virtual Address Address { get; set; }
+	}
+
+	public class Address : Entity
+	{
+		public virtual string Street { get; set; }
+		public virtual string Town { get; set; }
+		public virtual string Postcode { get; set; }
+	}
 }
 

@@ -20,45 +20,48 @@ namespace Basic
 {
 	public class Entity
 	{
-		public Guid Id { get; set; }
+		public virtual Guid Id { get; set; }
 	}
 
 	public class Person : Entity
 	{
-		public string FirstName { get; set; }
-		public string LastName { get; set; }
-		public Address Address { get; set; }
+		public virtual string FirstName { get; set; }
+
+		public virtual string LastName { get; set; }
+
+		public virtual Address Address { get; set; }
 	}
 
 	public class Address : Entity
 	{
-		public string Street { get; set; }
-		public string Town { get; set; }
-		public string Postcode { get; set; }
+		public virtual string Street { get; set; }
+
+		public virtual string Town { get; set; }
+
+		public virtual string Postcode { get; set; }
 	}
 
 	class MainClass
 	{
 		// initial idea about how I think this should work....
-
 		public static void Main (string[] args)
 		{
 			Console.WriteLine ("Hello World!");
 
 			// create an address and person aggrigate
-			var address = new Address () { Street="10 Downing Street", Town ="London", Postcode = "SW1A 2AA" };
+			var address = new Address () { Street = "10 Downing Street", Town = "London", Postcode = "SW1A 2AA" };
 			var person = new Person () { FirstName = "David", LastName = "Cameron", Address = address };
 
 			// connect to the database
-			var database = new PetrifyDB (new MongoDbDriver("myDatabase"));
+			var database = new PetrifyDB (new MongoDbDriver ("myDatabase"));
 
 			// save the person aggrigate
 			var id = database.Save (person);
 
 			// load the person aggrigate
-			//var person2 = database.Load<Person> (id);
+			var person2 = database.Load<Person> (id);
 
-			//Console.WriteLine (person2.Address.Street);
+			Console.WriteLine (person2.Address.Street);
 		}
 	}
 }

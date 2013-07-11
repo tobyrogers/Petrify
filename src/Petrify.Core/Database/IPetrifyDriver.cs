@@ -29,5 +29,10 @@ namespace Petrify.Core.Database
 		/// Updates an existing object in the database
 		/// </summary>
 		void Update (object value);
+
+		/// <summary>
+		/// Load the specified type and id.
+		/// </summary>
+		object Load (Type type, object id);	
 	}
 }

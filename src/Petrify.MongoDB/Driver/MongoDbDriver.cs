@@ -16,6 +16,9 @@ using System;
 using Petrify.Core.Database;
 using MongoDB.Driver;
 using MongoDB.Bson.Serialization.Options;
+using MongoDB.Driver.Builders;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
 
 namespace Petrify.MongoDB.Driver
 {
@@ -30,22 +33,32 @@ namespace Petrify.MongoDB.Driver
 			//todo: this has been depreicated
 			DateTimeSerializationOptions.Defaults = DateTimeSerializationOptions.LocalInstance;
 
+			BsonSerializer.RegisterSerializationProvider(new ProxySerialisationProvider ());
+
 			client = new MongoClient (); // connect to localhost (this will do for now)
 			server = client.GetServer ();
 			mongoDatabase = server.GetDatabase (database);
 		}
-
+			
 		#region IPetrifyDriver implementation
 
 		public void Save (object value)
 		{
 			var collection = mongoDatabase.GetCollection(value.GetType (),value.GetType().Name.ToLower());
-			var xx = collection.Save (value);
+			collection.Save (value);
 		}
 
 		public void Update (object value)
 		{
 			throw new NotImplementedException ();
+		}
+
+		public object Load (Type type, object id)
+		{
+			var collection = mongoDatabase.GetCollection (type, type.Name.ToLower ());
+			var bsonId = BsonValue.Create (id);
+			var obj = collection.FindOneByIdAs (type, bsonId);
+			return obj;
 		}
 
 		#endregion
