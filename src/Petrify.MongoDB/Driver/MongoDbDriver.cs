@@ -27,24 +27,29 @@ namespace Petrify.MongoDB.Driver
 		MongoClient client;
 		MongoServer server;
 		MongoDatabase mongoDatabase;
+		string database;
 
 		public MongoDbDriver (string database)
 		{
+			this.database = database;
 			//todo: this has been depreicated
-			DateTimeSerializationOptions.Defaults = DateTimeSerializationOptions.LocalInstance;
+			//DateTimeSerializationOptions.Defaults = DateTimeSerializationOptions.LocalInstance;
+		}
 
-			BsonSerializer.RegisterSerializationProvider(new ProxySerialisationProvider ());
+		#region IPetrifyDriver implementation
+		public void Initialize (PetrifyDB petrifyDB)
+		{
+			BsonSerializer.RegisterSerializationProvider (new ProxySerialisationProvider (petrifyDB.RootType));
+			BsonClassMap.RegisterClassMap<Ref>();
 
 			client = new MongoClient (); // connect to localhost (this will do for now)
 			server = client.GetServer ();
 			mongoDatabase = server.GetDatabase (database);
 		}
-			
-		#region IPetrifyDriver implementation
 
 		public void Save (object value)
 		{
-			var collection = mongoDatabase.GetCollection(value.GetType (),value.GetType().Name.ToLower());
+			var collection = mongoDatabase.GetCollection (value.GetType (), value.GetType ().Name.ToLower ());
 			collection.Save (value);
 		}
 
@@ -60,7 +65,6 @@ namespace Petrify.MongoDB.Driver
 			var obj = collection.FindOneByIdAs (type, bsonId);
 			return obj;
 		}
-
 		#endregion
 	}
 }

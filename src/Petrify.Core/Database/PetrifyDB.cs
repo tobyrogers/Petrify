@@ -23,7 +23,7 @@ namespace Petrify.Core.Database
 	public class PetrifyDB
 	{
 		IPetrifyDriver _driver;
-		Type rootType;
+		public Type RootType { get; private set;}
 
 		public PetrifyDB (IPetrifyDriver driver)
 		{
@@ -33,7 +33,7 @@ namespace Petrify.Core.Database
 		private object SaveOrUpdate (object value)
 		{
 			// get the Id, if null then assign one
-			var idPropertyInfo = rootType.GetProperty ("Id", typeof(Guid));
+			var idPropertyInfo = RootType.GetProperty ("Id", typeof(Guid));
 			Guid id = (Guid)idPropertyInfo.GetValue (value, null);
 			if (id == Guid.Empty)
 			{
@@ -57,14 +57,15 @@ namespace Petrify.Core.Database
 		public object Save (object aggrigate)
 		{
 			// if it has not been specified, get the rootType from the object
-			if (rootType == null)
+			if (RootType == null)
 			{
-				rootType = new RootInspector ().GetRootType (aggrigate.GetType ());
+				RootType = new RootInspector ().GetRootType (aggrigate.GetType ());
+				_driver.Initialize (this);
 			}
 
 			// now scan the aggrigate to find all referenced aggrigates
 			// (i.e. find all properties that derive from root class)
-			var references = new ReferenceInspector (rootType).GetReferences (aggrigate);
+			var references = new ReferenceInspector (RootType).GetReferences (aggrigate);
 
 			// sort by depth to ensure that that deepest depth get saved first
 			// if this save failed then deeper depth items may become orphans (is this a problem?...probably not)

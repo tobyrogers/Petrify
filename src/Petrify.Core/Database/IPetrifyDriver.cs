@@ -34,5 +34,7 @@ namespace Petrify.Core.Database
 		/// Load the specified type and id.
 		/// </summary>
 		object Load (Type type, object id);	
+
+		void Initialize (PetrifyDB petrifyDB); 
 	}
 }
