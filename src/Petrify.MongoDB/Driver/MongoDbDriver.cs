@@ -40,7 +40,6 @@ namespace Petrify.MongoDB.Driver
 		public void Initialize (PetrifyDB petrifyDB)
 		{
 			BsonSerializer.RegisterSerializationProvider (new ProxySerialisationProvider (petrifyDB.RootType));
-			BsonClassMap.RegisterClassMap<Ref>();
 
 			client = new MongoClient (); // connect to localhost (this will do for now)
 			server = client.GetServer ();
