@@ -19,7 +19,7 @@ using Petrify.Core.TestData;
 namespace Petrify.Core.Inspectors
 {
 	[TestFixture]
-	public class RootInspectorTest
+	public class DefaultRootFinderTest
 	{
 		[Test]
 		public void TestCanGetRootOfBasicAggrigate()
@@ -28,7 +28,7 @@ namespace Petrify.Core.Inspectors
 			var type = typeof(BasicAggrigate);
 
 			// then
-			var inspector = new RootInspector ();
+			var inspector = new DefaultRootFinder ();
 			var rootType = inspector.GetRootType (type);
 
 			// should give
@@ -42,7 +42,7 @@ namespace Petrify.Core.Inspectors
 			var type = typeof(ComplexAggrigate);
 
 			// then
-			var inspector = new RootInspector ();
+			var inspector = new DefaultRootFinder ();
 			var rootType = inspector.GetRootType (type);
 
 			// should give
@@ -57,7 +57,7 @@ namespace Petrify.Core.Inspectors
 			var type = typeof(InvalidAggrigate);
 
 			// then
-			var inspector = new RootInspector ();
+			var inspector = new DefaultRootFinder ();
 			inspector.GetRootType (type); // should throw
 		}
 	}

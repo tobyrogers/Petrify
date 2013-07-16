@@ -16,15 +16,11 @@ using System;
 
 namespace Petrify.Core.Inspectors
 {
-	public class RootInspector
+	public class DefaultRootFinder : IRootFinder
 	{
-		public RootInspector ()
+		public Type GetRootType (Type type)
 		{
-		}
-
-		public Type GetRootType(Type type)
-		{
-			while(type.BaseType != typeof(object) || type.IsInterface)
+			while (type.BaseType != typeof(object) || type.IsInterface)
 			{
 				type = type.BaseType;
 			}
@@ -34,29 +30,21 @@ namespace Petrify.Core.Inspectors
 			return type;
 		}
 
-		public bool IsValidAggrigateRoot(Type type)
+		public bool IsValidAggrigateRoot (Type type)
 		{
-			// type must be derived from object
+			// type must have an Id property of type Guid;
+			// todo: need to be more flexible here!
+			var propertyInfo = type.GetProperty ("Id", typeof(Guid));
+			return (propertyInfo != null);
+		}
 
-			// type must have an Id property od type Guid;
-			var propertyInfo =  type.GetProperty ("Id", typeof (Guid));
-			if (propertyInfo == null)
+		public void CheckAggrigateRootType (Type type)
+		{
+			if (!IsValidAggrigateRoot (type))
 			{
-				return false;
+				throw new ApplicationException (string.Format ("Type {0} is an invalid class to use as an aggrigate root. The class must have an Id property of type Guid.", type.Name));
 			}
-
-			return true;
-
 		}
-
-		public void CheckAggrigateRootType(Type type)
-		{
-			if (!IsValidAggrigateRoot (type)) {
-				throw new ApplicationException (string.Format("Type {0} is an invalid class to use as an aggrigate root. The class must have an Id property of type Guid.", type.Name));
-			}
-
-		}
-
 	}
 }
 

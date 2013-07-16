@@ -13,7 +13,7 @@
 // limitations under the License.
 //
 using System;
-using Petrify.Core.Database;
+using Petrify.Core.Repository;
 using MongoDB.Driver;
 using MongoDB.Bson.Serialization.Options;
 using MongoDB.Driver.Builders;
@@ -37,31 +37,33 @@ namespace Petrify.MongoDB.Driver
 		}
 
 		#region IPetrifyDriver implementation
-		public void Initialize (PetrifyDB petrifyDB)
+		public void Initialize (PetrifyRepository petrifyRepository)
 		{
-			BsonSerializer.RegisterSerializationProvider (new ProxySerialisationProvider (petrifyDB.RootType));
+			var referenceSerializer = new ReferenceSerializer (petrifyRepository);
+			var referenceSerialisationProvider = new ReferenceSerialisationProvider (petrifyRepository.EntityIdProvider, referenceSerializer);
+			BsonSerializer.RegisterSerializationProvider (referenceSerialisationProvider);
 
 			client = new MongoClient (); // connect to localhost (this will do for now)
 			server = client.GetServer ();
 			mongoDatabase = server.GetDatabase (database);
 		}
 
-		public void Save (object value)
+		public void Save (Type defaultType, string collectionName, object entity)
 		{
-			var collection = mongoDatabase.GetCollection (value.GetType (), value.GetType ().Name.ToLower ());
-			collection.Save (value);
+			var collection = mongoDatabase.GetCollection( defaultType, collectionName);
+			collection.Save (entity);
 		}
 
-		public void Update (object value)
+		public void Update (Type defaultType, string collectionName, object entity)
 		{
 			throw new NotImplementedException ();
 		}
 
-		public object Load (Type type, object id)
+		public object Load (Type defaultType, string collectionName, object id)
 		{
-			var collection = mongoDatabase.GetCollection (type, type.Name.ToLower ());
+			var collection = mongoDatabase.GetCollection (defaultType, collectionName);
 			var bsonId = BsonValue.Create (id);
-			var obj = collection.FindOneByIdAs (type, bsonId);
+			var obj = collection.FindOneByIdAs (defaultType, bsonId);
 			return obj;
 		}
 		#endregion

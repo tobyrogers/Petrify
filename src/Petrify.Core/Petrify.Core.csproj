@@ -35,15 +35,26 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Database\PetrifyDB.cs" />
     <Compile Include="Inspectors\ReferenceInspector.cs" />
-    <Compile Include="Inspectors\RootInspector.cs" />
-    <Compile Include="Database\IPetrifyDriver.cs" />
+    <Compile Include="Repository\PetrifyRepository.cs" />
+    <Compile Include="Repository\IPetrifyDriver.cs" />
+    <Compile Include="Inspectors\IRootFinder.cs" />
+    <Compile Include="Inspectors\DefaultRootFinder.cs" />
+    <Compile Include="Proxies\EntityReference.cs" />
+    <Compile Include="Inspectors\ReferenceProperty.cs" />
+    <Compile Include="Proxies\CastleDynamicProxyReferenceMarker.cs" />
+    <Compile Include="Proxies\IReferenceMarker.cs" />
+    <Compile Include="Exceptions\PetrifyException.cs" />
+    <Compile Include="Inspectors\EntityCollectionMapper.cs" />
+    <Compile Include="Inspectors\AutoEntityInspector.cs" />
+    <Compile Include="Inspectors\IEntityInspector.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <Folder Include="Database\" />
     <Folder Include="Inspectors\" />
+    <Folder Include="Proxies\" />
+    <Folder Include="Repository\" />
+    <Folder Include="Exceptions\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -29,7 +29,7 @@ namespace Petrify.Core.Proxies
 			person.Address = new Address ();
 			person.FirstName = "Old Name";
 
-			ProxyGenerator generator = new ProxyGenerator();
+			//ProxyGenerator generator = new ProxyGenerator();
 
 
 //

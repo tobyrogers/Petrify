@@ -18,41 +18,49 @@ using System.Collections.Generic;
 
 namespace Petrify.Core.Inspectors
 {
+	public interface IReferenceInspector
+	{
+
+	}
+
 	public class ReferenceInspector
 	{
-		Type _rootType;
+		IEntityInspector _entityIdProvider;
 
-		public ReferenceInspector (Type rootType)
+		public ReferenceInspector (IEntityInspector entityIdProvider)
 		{
-			_rootType = rootType;
+			_entityIdProvider = entityIdProvider;
 		}
 
-		public  IEnumerable<Reference> GetReferences (object obj)
+		public  IEnumerable<ReferenceProperty> GetReferences (object obj)
 		{
 			return GetReferences (obj, 0);
 		}
 
-		private IEnumerable<Reference> GetReferences (object obj, int level)
+		private IEnumerable<ReferenceProperty> GetReferences (object obj, int level)
 		{
 			level++;
-			var references = new List<Reference> ();
+			var references = new List<ReferenceProperty> ();
 
 			// get all public instance methods
-			var propertyInfos = obj.GetType ().GetProperties (BindingFlags.Public|BindingFlags.Instance);
+			var propertyInfos = obj.GetType ().GetProperties (BindingFlags.Public | BindingFlags.Instance);
 			foreach (PropertyInfo propertyInfo in propertyInfos)
 			{
+				// if it not a class then it can't be an entity or have children to inspect
+				// todo: what about interfaces??
 				if (propertyInfo.PropertyType.IsClass)
 				{
-					// find all properties on this class that are aggrigates (ie derive from rootType)
-					if (propertyInfo.PropertyType.IsSubclassOf (_rootType))
-					{
-						references.Add (new Reference(propertyInfo, obj, level));
-					}
-
-					// recurse down the tree
 					var value = propertyInfo.GetValue (obj, null);
 					if (value != null)
 					{
+						// find all properties on this class that are entities in their own right
+						// ie. this property represents a reference
+						if (_entityIdProvider.IsEntity (value.GetType()))
+						{
+							references.Add (new ReferenceProperty (propertyInfo, obj, level));
+						}
+
+						// recurse down the tree
 						var childReferences = GetReferences (value, level);
 						references.AddRange (childReferences);
 					}
@@ -60,31 +68,6 @@ namespace Petrify.Core.Inspectors
 			}
 
 			return references;
-		}
-	}
-
-	public class Reference
-	{
-		PropertyInfo _propertyInfo;
-		object _obj;
-
-		public Reference (PropertyInfo propertyInfo, object obj, int level)
-		{
-			_obj = obj;
-			_propertyInfo = propertyInfo;
-			Depth = level;
-		}
-
-		public int Depth { get; private set;} 
-
-		public object GetValue ()
-		{
-			return _propertyInfo.GetValue (_obj, null);
-		}
-
-		public void SetValue (object value)
-		{
-			_propertyInfo.SetValue (_obj, value, null);
 		}
 	}
 }

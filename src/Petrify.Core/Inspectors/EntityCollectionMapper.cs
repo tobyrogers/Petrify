@@ -13,28 +13,26 @@
 // limitations under the License.
 //
 using System;
-using Petrify.Core.Inspectors;
-using Castle.DynamicProxy;
 
-namespace Petrify.Core.Database
+namespace Petrify.Core.Inspectors
 {
-	public interface IPetrifyDriver
+	public struct EntityCollectionMap
 	{
-		/// <summary>
-		/// Saves a new object to the database.
-		/// </summary>
-		void Save (object value);
+		public Type DefaultType;
+		public string CollectionName;
+	}
 
-		/// <summary>
-		/// Updates an existing object in the database
-		/// </summary>
-		void Update (object value);
+	public interface IEntityCollectionMapper
+	{
+		EntityCollectionMap GetCollectionMap (Type entityType);
+	}
 
-		/// <summary>
-		/// Load the specified type and id.
-		/// </summary>
-		object Load (Type type, object id);	
-
-		void Initialize (PetrifyDB petrifyDB); 
+	public class AutoEntityCollectionMapper : IEntityCollectionMapper
+	{
+		public EntityCollectionMap GetCollectionMap(Type entityType)
+		{
+			return new EntityCollectionMap () { DefaultType = entityType, CollectionName = entityType.Name };
+		}
 	}
 }
+

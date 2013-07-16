@@ -12,31 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
+
 using System;
-using NUnit.Framework;
-using Petrify.Core.TestData;
-using System.Linq;
 
-namespace Petrify.Core.Inspectors
+namespace Petrify.Core.Proxies
 {
-	[TestFixture]
-	public class ReferenceInspectorTest
+	public class EntityReference
 	{
-		[Test]
-		[Ignore]
-		public void TestCanGetReferencesForComplexAggrigate()
-		{
-			// given
-			var aggrigate = new ComplexAggrigate ();
-			IEntityInspector entityInspector = null;
-
-			// then
-			var inspector = new ReferenceInspector (entityInspector);
-			var references = inspector.GetReferences (aggrigate);
-
-			// should give
-			Assert.That (references.Count(), Is.EqualTo (1));
-		}
+		public object EntityId { get; set; }
+		public string EntityType { get; set; }
 	}
 }
-

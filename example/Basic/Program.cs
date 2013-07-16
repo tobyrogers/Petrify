@@ -13,7 +13,7 @@
 // limitations under the License.
 //
 using System;
-using Petrify.Core.Database;
+using Petrify.Core.Repository;
 using Petrify.MongoDB.Driver;
 
 namespace Basic
@@ -53,12 +53,12 @@ namespace Basic
 			var person = new Person () { FirstName = "David", LastName = "Cameron", Address = address };
 
 			// connect to the database
-			var database = new PetrifyDB (new MongoDbDriver ("myDatabase"));
+			var database = new PetrifyRepository (new MongoDbDriver ("myDatabase"));
 
-			// save the person aggrigate
+			// save the person document
 			var id = database.Save (person);
 
-			// load the person aggrigate
+			// load the person document
 			var person2 = database.Load<Person> (id);
 
 			Console.WriteLine (person2.Address.Street);

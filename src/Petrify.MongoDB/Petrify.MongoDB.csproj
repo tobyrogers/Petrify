@@ -39,7 +39,9 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Driver\MongoDbDriver.cs" />
-    <Compile Include="Driver\ProxySerialisationProvider.cs" />
+    <Compile Include="Driver\ReferenceSerialisationProvider.cs" />
+    <Compile Include="Driver\ReferenceDescriminatorConvention.cs" />
+    <Compile Include="Driver\ReferenceSerializer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
