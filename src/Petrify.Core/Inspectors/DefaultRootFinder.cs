@@ -16,7 +16,7 @@ using System;
 
 namespace Petrify.Core.Inspectors
 {
-	public class DefaultRootFinder : IRootFinder
+	public class DefaultRootFinder
 	{
 		public Type GetRootType (Type type)
 		{

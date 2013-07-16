@@ -16,52 +16,52 @@ using System;
 using Petrify.Core.Inspectors;
 using System.Linq;
 using System.Collections.Generic;
-using Petrify.Core.Proxies;
+using Petrify.Core.TableMappers;
 
 namespace Petrify.Core.Repository
 {
 	public interface IPetrifyRepository
 	{
-		object LoadEntity (EntityReference entityReference);
+		object Load (Type type, object id);
 	}
 
 	public class PetrifyRepository : IPetrifyRepository
 	{
 		IPetrifyDriver _driver;
 
-		public IEntityInspector EntityIdProvider { get; set; }
+		public IEntityInspector EntityInspector { get; set; }
 
-		public IEntityCollectionMapper EntityCollectionMapper { get; set; }
+		public ITableMapper TableMapper { get; set; }
 
 		public PetrifyRepository (IPetrifyDriver driver)
 		{
 			_driver = driver;
-			EntityIdProvider = new AutoEntityInspector ();
-			EntityCollectionMapper = new AutoEntityCollectionMapper ();
+			EntityInspector = new AutoEntityInspector ();
+			TableMapper = new  AutoTableMapper ();
 
 			_driver.Initialize (this); // driver needs to know what the root type is 
 		}
 
 		private object SaveOrUpdate (object entity)
 		{
-			var collectionMap = EntityCollectionMapper.GetCollectionMap (entity.GetType ());
+			var tableMapping = TableMapper.GetTableMapping (entity.GetType ());
 
 			// todo: don't like this!
 			// get the Id, if null then assign one
-			Guid id = (Guid)EntityIdProvider.GetEntityId (entity);
+			Guid id = (Guid)EntityInspector.GetEntityId (entity);
 			if (id == Guid.Empty)
 			{
 				// todo: create a id generator
 				id = Guid.NewGuid ();
 				// make sure the id has been set back on the entity
-				EntityIdProvider.SetEntityId (entity, id);
+				EntityInspector.SetEntityId (entity, id);
 				// if the Id was null then it must be saved
-				_driver.Save (collectionMap.DefaultType, collectionMap.CollectionName, entity);
+				_driver.Save (tableMapping.BaseType, tableMapping.TableName, entity);
 			} else
 			{
 				// todo: if the document already has an id then we need to determine if
 				// it has been modified. Need some dirty flag...a job for Castle Dynamic Proxy?
-				_driver.Update (collectionMap.DefaultType, collectionMap.CollectionName, entity);
+				_driver.Update (tableMapping.BaseType, tableMapping.TableName, entity);
 			}
 
 			return id;
@@ -69,11 +69,11 @@ namespace Petrify.Core.Repository
 
 		public object Save (object entity)
 		{
-			EntityIdProvider.AssertIsEntity (entity.GetType());
+			EntityInspector.AssertIsEntity (entity.GetType ());
 
 			// now scan the document to find all referenced entities
 			// (i.e. find all properties that derive from root class)
-			var referenceProperties = new ReferenceInspector (EntityIdProvider).GetReferences (entity);
+			var referenceProperties = new ReferenceInspector (EntityInspector).GetReferences (entity);
 
 			// sort by depth to ensure that that deepest depth get saved first
 			// if this save failed then deeper depth items may become orphans 
@@ -97,14 +97,13 @@ namespace Petrify.Core.Repository
 
 		public T Load<T> (object id)
 		{ 
-			var collectionMap = EntityCollectionMapper.GetCollectionMap (typeof(T));
-			return (T)_driver.Load (collectionMap.DefaultType, collectionMap.CollectionName, id);
+			return (T)Load (typeof(T),id);
 		}
 
-		public object LoadEntity (EntityReference entityReference)
+		public object Load (Type type, object id)
 		{
-			var collectionMap = EntityCollectionMapper.GetCollectionMap (Type.GetType (entityReference.EntityType));
-			return _driver.Load (collectionMap.DefaultType, collectionMap.CollectionName, entityReference.EntityId);
+			var tableMapping = TableMapper.GetTableMapping (type);
+			return _driver.Load (tableMapping.BaseType, tableMapping.TableName, id);
 		}
 	}
 }

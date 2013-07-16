@@ -12,27 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
+
 using System;
 
-namespace Petrify.Core.Inspectors
+namespace Petrify.Core.TableMappers
 {
-	public struct EntityCollectionMap
+	public class TableMapping
 	{
-		public Type DefaultType;
-		public string CollectionName;
-	}
-
-	public interface IEntityCollectionMapper
-	{
-		EntityCollectionMap GetCollectionMap (Type entityType);
-	}
-
-	public class AutoEntityCollectionMapper : IEntityCollectionMapper
-	{
-		public EntityCollectionMap GetCollectionMap(Type entityType)
+		public TableMapping(Type baseType, string tableName)
 		{
-			return new EntityCollectionMap () { DefaultType = entityType, CollectionName = entityType.Name };
+			BaseType = baseType;
+			TableName = tableName;
 		}
-	}
-}
 
+		public Type BaseType { get; private set; }
+		public string TableName { get; private set; }
+	}
+	
+}

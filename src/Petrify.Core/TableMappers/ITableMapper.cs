@@ -15,11 +15,11 @@
 
 using System;
 
-namespace Petrify.Core.Inspectors
+namespace Petrify.Core.TableMappers
 {
-	public interface IRootFinder
+	public interface ITableMapper
 	{
-		Type GetRootType (Type type);
+		TableMapping GetTableMapping (Type entityType);
 	}
 	
 }

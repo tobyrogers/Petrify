@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-
 using System;
 using Petrify.Core.Repository;
 using MongoDB.Driver;
@@ -25,6 +24,7 @@ using MongoDB.Bson.IO;
 using System.Linq;
 using MongoDB.Bson.Serialization.Conventions;
 using Petrify.Core.Proxies;
+using Petrify.Core.Exceptions;
 
 namespace Petrify.MongoDB.Driver
 {
@@ -32,11 +32,11 @@ namespace Petrify.MongoDB.Driver
 	{
 		private readonly Type _referenceType;
 		private readonly string _referenceDescriminator;
-		IDiscriminatorConvention _underlyingConvention = new HierarchicalDiscriminatorConvention ("_t");
+		IDiscriminatorConvention _underlyingConvention = StandardDiscriminatorConvention.Hierarchical;
 
-		public ReferenceDescriminatorConvention()
+		public ReferenceDescriminatorConvention ()
 		{
-			_referenceType  = typeof(EntityReference);
+			_referenceType = typeof(EntityReference);
 			_referenceDescriminator = _referenceType.Name;
 		}
 
@@ -48,7 +48,7 @@ namespace Petrify.MongoDB.Driver
 				var bookmark = bsonReader.GetBookmark ();
 				bsonReader.ReadStartDocument ();
 				var actualType = nominalType;
-				if (bsonReader.FindElement ("_t")) // get descriminator from descriminator convention
+				if (bsonReader.FindElement (_underlyingConvention.ElementName))
 				{
 					var discriminator = (BsonValue)BsonValueSerializer.Instance.Deserialize (bsonReader, typeof(BsonValue), null);
 					bsonReader.ReturnToBookmark (bookmark);
@@ -64,8 +64,7 @@ namespace Petrify.MongoDB.Driver
 				return actualType;
 			}
 
-			// this should never be called for a non document type
-			throw new Exception ();
+			throw new PetrifyException ("ReferenceDescrimator::GetActualType called on a non document bson element");
 		}
 
 		public BsonValue GetDiscriminator (Type nominalType, Type actualType)

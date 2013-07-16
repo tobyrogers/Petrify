@@ -35,12 +35,11 @@ namespace Petrify.MongoDB.Driver
 			//todo: this has been depreicated
 			//DateTimeSerializationOptions.Defaults = DateTimeSerializationOptions.LocalInstance;
 		}
-
 		#region IPetrifyDriver implementation
 		public void Initialize (PetrifyRepository petrifyRepository)
 		{
-			var referenceSerializer = new ReferenceSerializer (petrifyRepository);
-			var referenceSerialisationProvider = new ReferenceSerialisationProvider (petrifyRepository.EntityIdProvider, referenceSerializer);
+			var referenceSerializer = new ReferenceSerializer (petrifyRepository, petrifyRepository.EntityInspector);
+			var referenceSerialisationProvider = new ReferenceSerialisationProvider (petrifyRepository.EntityInspector, referenceSerializer);
 			BsonSerializer.RegisterSerializationProvider (referenceSerialisationProvider);
 
 			client = new MongoClient (); // connect to localhost (this will do for now)
@@ -50,7 +49,7 @@ namespace Petrify.MongoDB.Driver
 
 		public void Save (Type defaultType, string collectionName, object entity)
 		{
-			var collection = mongoDatabase.GetCollection( defaultType, collectionName);
+			var collection = mongoDatabase.GetCollection (defaultType, collectionName);
 			collection.Save (entity);
 		}
 

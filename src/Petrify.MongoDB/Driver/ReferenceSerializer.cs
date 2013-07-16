@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-
 using System;
 using Petrify.Core.Repository;
 using MongoDB.Driver;
@@ -25,44 +24,45 @@ using MongoDB.Bson.IO;
 using System.Linq;
 using MongoDB.Bson.Serialization.Conventions;
 using Petrify.Core.Proxies;
+using Petrify.Core.Inspectors;
 
 namespace Petrify.MongoDB.Driver
 {
-
 	public class ReferenceSerializer : BsonBaseSerializer, IBsonIdProvider
 	{
-		private IPetrifyRepository _petrifyRepository;
+		private readonly IPetrifyRepository _petrifyRepository;
+		private readonly IEntityInspector _entityInspector;
 
-		public ReferenceSerializer(IPetrifyRepository petrifyRepository)
+		public ReferenceSerializer (IPetrifyRepository petrifyRepository, IEntityInspector entityInspector)
 		{
 			_petrifyRepository = petrifyRepository;
+			_entityInspector = entityInspector;
 		}
 
 		public bool GetDocumentId (object document, out object id, out Type idNominalType, out IIdGenerator idGenerator)
 		{
-			var idPropertyInfo = document.GetType ().GetProperty ("Id", typeof(Guid));
-			id = idPropertyInfo.GetValue (document, null);
-			idNominalType = typeof(Guid);
+			id = _entityInspector.GetEntityId (document);
+			idNominalType = id.GetType ();
 			idGenerator = null;
 			return true;
 		}
 
 		public void SetDocumentId (object document, object id)
 		{
-			throw new NotImplementedException ();
+			_entityInspector.SetEntityId (document, id);
 		}
 
 		public override void Serialize (BsonWriter bsonWriter, Type nominalType, object value, IBsonSerializationOptions options)
 		{
-			if(bsonWriter.SerializationDepth > 0)
+			BsonClassMap classMap = BsonClassMap.LookupClassMap (value.GetType ());
+			if (bsonWriter.SerializationDepth > 0)
 			{
 				// this should be saved as a reference as it is not the top level entity
-				var idPropertyInfo = value.GetType ().GetProperty ("Id", typeof(Guid));
-				Guid id = (Guid)idPropertyInfo.GetValue (value, null);
-				value = new EntityReference () { EntityType = nominalType.Name, EntityId = id };
+				var id = _entityInspector.GetEntityId (value);
+				value = new EntityReference () { EntityType = classMap.Discriminator, EntityId = id };
+				classMap = BsonClassMap.LookupClassMap (typeof(EntityReference));
 			}
 	
-			BsonClassMap classMap = BsonClassMap.LookupClassMap (value.GetType ());
 			var serializer = new BsonClassMapSerializer (classMap);
 			serializer.Serialize (bsonWriter, nominalType, value, options);
 		}
@@ -75,11 +75,12 @@ namespace Petrify.MongoDB.Driver
 
 			if (actualType == typeof(EntityReference))
 			{
-				obj = _petrifyRepository.LoadEntity ((EntityReference)obj);
+				var entityReference = (EntityReference)obj;
+				var type = BsonSerializer.LookupActualType (nominalType, entityReference.EntityType);
+				obj = _petrifyRepository.Load (type,entityReference.EntityId);
 			}
 
 			return obj;
 		}
 	}
-
 }

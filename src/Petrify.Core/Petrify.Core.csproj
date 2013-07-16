@@ -38,16 +38,17 @@
     <Compile Include="Inspectors\ReferenceInspector.cs" />
     <Compile Include="Repository\PetrifyRepository.cs" />
     <Compile Include="Repository\IPetrifyDriver.cs" />
-    <Compile Include="Inspectors\IRootFinder.cs" />
     <Compile Include="Inspectors\DefaultRootFinder.cs" />
     <Compile Include="Proxies\EntityReference.cs" />
     <Compile Include="Inspectors\ReferenceProperty.cs" />
     <Compile Include="Proxies\CastleDynamicProxyReferenceMarker.cs" />
     <Compile Include="Proxies\IReferenceMarker.cs" />
     <Compile Include="Exceptions\PetrifyException.cs" />
-    <Compile Include="Inspectors\EntityCollectionMapper.cs" />
     <Compile Include="Inspectors\AutoEntityInspector.cs" />
     <Compile Include="Inspectors\IEntityInspector.cs" />
+    <Compile Include="TableMappers\ITableMapper.cs" />
+    <Compile Include="TableMappers\AutoTableMapper.cs" />
+    <Compile Include="TableMappers\TableMapping.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -55,6 +56,7 @@
     <Folder Include="Proxies\" />
     <Folder Include="Repository\" />
     <Folder Include="Exceptions\" />
+    <Folder Include="TableMappers\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
