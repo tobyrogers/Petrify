@@ -35,6 +35,7 @@ namespace Petrify.Core.Repository
 		/// </summary>
 		object Load (Type defaultType, string collectionName, object id);	
 
-		void Initialize (PetrifyRepository petrifyDB); 
+		// shoud this just be a confriguration object?
+		void Initialize (IEntityInspector entityInspector, IReferenceLoader referenceLoader);
 	}
 }

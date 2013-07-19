@@ -13,14 +13,29 @@
 // limitations under the License.
 //
 using System;
-using Petrify.Core.Inspectors;
+using NUnit.Framework;
+using Petrify.Core.TestData;
+using Castle.DynamicProxy;
+using Petrify.Core.Repository;
 
 namespace Petrify.Core.Proxies
 {
-	public interface IReferenceMarker
+	[TestFixture]
+	public class CastleLazyReferenceLoaderTest
 	{
-		void MarkAsReference (ReferenceProperty referenceProperty);
-		bool IsMarkedAsReference (object obj);
+		[Test]
+		public void TestCanGenerateLazyReference ()
+		{
+			// given
+			IRepository repository = null;
+
+			// then 
+			var referenceLoader = new CastleLazyReferenceLoader (repository);
+			var reference = referenceLoader.LoadReference (typeof(BasicAggrigate), 0);
+
+			// should give
+			Assert.IsInstanceOf<BasicAggrigate> (reference);
+		}
 	}
 }
 

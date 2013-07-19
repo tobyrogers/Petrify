@@ -30,12 +30,12 @@ namespace Petrify.MongoDB.Driver
 {
 	public class ReferenceSerializer : BsonBaseSerializer, IBsonIdProvider
 	{
-		private readonly IPetrifyRepository _petrifyRepository;
+		private readonly IReferenceLoader _referenceLoader;
 		private readonly IEntityInspector _entityInspector;
 
-		public ReferenceSerializer (IPetrifyRepository petrifyRepository, IEntityInspector entityInspector)
+		public ReferenceSerializer (IReferenceLoader referenceLoader, IEntityInspector entityInspector)
 		{
-			_petrifyRepository = petrifyRepository;
+			_referenceLoader = referenceLoader;
 			_entityInspector = entityInspector;
 		}
 
@@ -77,7 +77,7 @@ namespace Petrify.MongoDB.Driver
 			{
 				var entityReference = (EntityReference)obj;
 				var type = BsonSerializer.LookupActualType (nominalType, entityReference.EntityType);
-				obj = _petrifyRepository.Load (type,entityReference.EntityId);
+				obj = _referenceLoader.LoadReference (type,entityReference.EntityId);
 			}
 
 			return obj;

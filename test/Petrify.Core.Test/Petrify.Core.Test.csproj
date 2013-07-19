@@ -43,8 +43,8 @@
     <Compile Include="TestData\InvalidAggrigate.cs" />
     <Compile Include="TestData\InvalidRoot.cs" />
     <Compile Include="Inspectors\ReferenceInspectorTest.cs" />
-    <Compile Include="Proxies\ProxyTest.cs" />
     <Compile Include="Inspectors\DefaultRootFinderTest.cs" />
+    <Compile Include="Proxies\CastleLazyReferenceLoaderTest.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

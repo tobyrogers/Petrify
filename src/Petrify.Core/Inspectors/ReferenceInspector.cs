@@ -25,11 +25,11 @@ namespace Petrify.Core.Inspectors
 
 	public class ReferenceInspector
 	{
-		IEntityInspector _entityIdProvider;
+		IEntityInspector _entityInspector;
 
-		public ReferenceInspector (IEntityInspector entityIdProvider)
+		public ReferenceInspector (IEntityInspector entityInspector)
 		{
-			_entityIdProvider = entityIdProvider;
+			_entityInspector = entityInspector;
 		}
 
 		public  IEnumerable<ReferenceProperty> GetReferences (object obj)
@@ -55,7 +55,7 @@ namespace Petrify.Core.Inspectors
 					{
 						// find all properties on this class that are entities in their own right
 						// ie. this property represents a reference
-						if (_entityIdProvider.IsEntity (value.GetType()))
+						if (_entityInspector.IsEntity (value.GetType()))
 						{
 							references.Add (new ReferenceProperty (propertyInfo, obj, level));
 						}

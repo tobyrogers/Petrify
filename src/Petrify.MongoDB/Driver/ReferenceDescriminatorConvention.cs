@@ -54,7 +54,7 @@ namespace Petrify.MongoDB.Driver
 					bsonReader.ReturnToBookmark (bookmark);
 					if (discriminator.Equals (_referenceDescriminator))
 					{
-						actualType = typeof(EntityReference);
+						actualType = _referenceType;
 					} else
 					{
 						actualType = _underlyingConvention.GetActualType (bsonReader, nominalType);
@@ -69,7 +69,7 @@ namespace Petrify.MongoDB.Driver
 
 		public BsonValue GetDiscriminator (Type nominalType, Type actualType)
 		{
-			if (actualType == typeof(EntityReference))
+			if (actualType == _referenceType)
 			{
 				return _referenceDescriminator;
 			}

@@ -14,32 +14,35 @@
 //
 using System;
 using Petrify.Core.Inspectors;
+using Petrify.Core.Proxies;
 using System.Linq;
 using System.Collections.Generic;
 using Petrify.Core.TableMappers;
 
 namespace Petrify.Core.Repository
 {
-	public interface IPetrifyRepository
-	{
-		object Load (Type type, object id);
-	}
 
-	public class PetrifyRepository : IPetrifyRepository
+	public class PetrifyRepository : IRepository
 	{
 		IPetrifyDriver _driver;
+
+		public IReferenceLoader ReferenceLoader { get; set; }
 
 		public IEntityInspector EntityInspector { get; set; }
 
 		public ITableMapper TableMapper { get; set; }
 
+		public bool LazyLoad { get; set; }
+
 		public PetrifyRepository (IPetrifyDriver driver)
 		{
 			_driver = driver;
+
 			EntityInspector = new AutoEntityInspector ();
 			TableMapper = new  AutoTableMapper ();
+			ReferenceLoader = new CastleLazyReferenceLoader (this);
 
-			_driver.Initialize (this); // driver needs to know what the root type is 
+			_driver.Initialize (EntityInspector, ReferenceLoader); // driver needs to know what the root type is 
 		}
 
 		private object SaveOrUpdate (object entity)
@@ -97,7 +100,7 @@ namespace Petrify.Core.Repository
 
 		public T Load<T> (object id)
 		{ 
-			return (T)Load (typeof(T),id);
+			return (T)Load (typeof(T), id);
 		}
 
 		public object Load (Type type, object id)

@@ -41,14 +41,15 @@
     <Compile Include="Inspectors\DefaultRootFinder.cs" />
     <Compile Include="Proxies\EntityReference.cs" />
     <Compile Include="Inspectors\ReferenceProperty.cs" />
-    <Compile Include="Proxies\CastleDynamicProxyReferenceMarker.cs" />
-    <Compile Include="Proxies\IReferenceMarker.cs" />
     <Compile Include="Exceptions\PetrifyException.cs" />
     <Compile Include="Inspectors\AutoEntityInspector.cs" />
     <Compile Include="Inspectors\IEntityInspector.cs" />
     <Compile Include="TableMappers\ITableMapper.cs" />
     <Compile Include="TableMappers\AutoTableMapper.cs" />
     <Compile Include="TableMappers\TableMapping.cs" />
+    <Compile Include="Proxies\IReferenceLoader.cs" />
+    <Compile Include="Proxies\CastleLazyReferenceLoader.cs" />
+    <Compile Include="Repository\IRepository.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

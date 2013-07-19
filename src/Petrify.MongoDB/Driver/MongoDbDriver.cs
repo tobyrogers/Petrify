@@ -19,6 +19,7 @@ using MongoDB.Bson.Serialization.Options;
 using MongoDB.Driver.Builders;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
+using Petrify.Core.Inspectors;
 
 namespace Petrify.MongoDB.Driver
 {
@@ -36,10 +37,10 @@ namespace Petrify.MongoDB.Driver
 			//DateTimeSerializationOptions.Defaults = DateTimeSerializationOptions.LocalInstance;
 		}
 		#region IPetrifyDriver implementation
-		public void Initialize (PetrifyRepository petrifyRepository)
+		public void Initialize (IEntityInspector entityInspector, IReferenceLoader referenceLoader)
 		{
-			var referenceSerializer = new ReferenceSerializer (petrifyRepository, petrifyRepository.EntityInspector);
-			var referenceSerialisationProvider = new ReferenceSerialisationProvider (petrifyRepository.EntityInspector, referenceSerializer);
+			var referenceSerializer = new ReferenceSerializer (referenceLoader, entityInspector);
+			var referenceSerialisationProvider = new ReferenceSerialisationProvider (entityInspector, referenceSerializer);
 			BsonSerializer.RegisterSerializationProvider (referenceSerialisationProvider);
 
 			client = new MongoClient (); // connect to localhost (this will do for now)
