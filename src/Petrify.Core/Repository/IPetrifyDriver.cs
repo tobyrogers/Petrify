@@ -15,6 +15,7 @@
 using System;
 using Petrify.Core.Inspectors;
 using Castle.DynamicProxy;
+using Petrify.Core.ReferenceLoaders;
 
 namespace Petrify.Core.Repository
 {

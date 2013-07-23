@@ -15,7 +15,7 @@
 
 using System;
 using Petrify.Core.Inspectors;
-using Petrify.Core.Proxies;
+using Petrify.Core.ReferenceLoaders;
 using System.Linq;
 using System.Collections.Generic;
 using Petrify.Core.TableMappers;

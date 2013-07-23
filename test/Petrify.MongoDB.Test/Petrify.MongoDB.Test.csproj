@@ -9,6 +9,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Petrify.MongoDB</RootNamespace>
     <AssemblyName>Petrify.MongoDB.Test</AssemblyName>
+    <ReleaseVersion>0.0.1-alpha</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

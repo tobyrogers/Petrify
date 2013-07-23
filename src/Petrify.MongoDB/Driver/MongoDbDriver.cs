@@ -20,37 +20,43 @@ using MongoDB.Driver.Builders;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using Petrify.Core.Inspectors;
+using Petrify.Core.ReferenceLoaders;
 
 namespace Petrify.MongoDB.Driver
 {
 	public class MongoDbDriver : IPetrifyDriver
 	{
-		MongoClient client;
-		MongoServer server;
-		MongoDatabase mongoDatabase;
-		string database;
+		MongoDatabase _mongoDatabase;
 
-		public MongoDbDriver (string database)
+		public MongoDbDriver (string connectionString) 
 		{
-			this.database = database;
-			//todo: this has been depreicated
-			//DateTimeSerializationOptions.Defaults = DateTimeSerializationOptions.LocalInstance;
+			_mongoDatabase = GetDatabaseFromConnectionString (connectionString);
 		}
+
+		private static MongoDatabase GetDatabaseFromConnectionString (string connectionString)
+		{
+			var connectionStringBuilder = new MongoUrlBuilder (connectionString);
+			var client = new MongoClient (connectionStringBuilder.ToMongoUrl());
+			var server = client.GetServer ();
+			var mongoDatabase = server.GetDatabase (connectionStringBuilder.DatabaseName);
+			return mongoDatabase;
+		}
+
 		#region IPetrifyDriver implementation
 		public void Initialize (IEntityInspector entityInspector, IReferenceLoader referenceLoader)
 		{
+			//todo: this has been depreicated
+			//DateTimeSerializationOptions.Defaults = DateTimeSerializationOptions.LocalInstance;
+
 			var referenceSerializer = new ReferenceSerializer (referenceLoader, entityInspector);
 			var referenceSerialisationProvider = new ReferenceSerialisationProvider (entityInspector, referenceSerializer);
 			BsonSerializer.RegisterSerializationProvider (referenceSerialisationProvider);
 
-			client = new MongoClient (); // connect to localhost (this will do for now)
-			server = client.GetServer ();
-			mongoDatabase = server.GetDatabase (database);
 		}
 
 		public void Save (Type defaultType, string collectionName, object entity)
 		{
-			var collection = mongoDatabase.GetCollection (defaultType, collectionName);
+			var collection = _mongoDatabase.GetCollection (defaultType, collectionName);
 			collection.Save (entity);
 		}
 
@@ -61,7 +67,7 @@ namespace Petrify.MongoDB.Driver
 
 		public object Load (Type defaultType, string collectionName, object id)
 		{
-			var collection = mongoDatabase.GetCollection (defaultType, collectionName);
+			var collection = _mongoDatabase.GetCollection (defaultType, collectionName);
 			var bsonId = BsonValue.Create (id);
 			var obj = collection.FindOneByIdAs (defaultType, bsonId);
 			return obj;

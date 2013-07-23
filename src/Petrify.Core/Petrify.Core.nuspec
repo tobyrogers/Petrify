@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package >
+  <metadata>
+    <id>Petrify</id>
+    <version>0.0.3-alpha</version>
+    <title>Petrify</title>
+    <authors>Toby Rogers</authors>
+    <owners>tobyrogers</owners>
+    <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
+    <projectUrl>https://github.com/tobyrogers/Petrify/wiki</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Base assemblies for the Petrify NoSQL persistence manager</description>
+    <dependencies>
+      <dependency id="Castle.Core" version="3.2.0" />
+    </dependencies> 
+  </metadata>
+  <files>
+    <file src="bin/Release/Petrify.Core.dll" target="lib/net40" />
+  </files>
+</package>

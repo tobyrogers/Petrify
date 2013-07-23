@@ -17,7 +17,7 @@ using Castle.DynamicProxy;
 using Petrify.Core.Inspectors;
 using Petrify.Core.Repository;
 
-namespace Petrify.Core.Proxies
+namespace Petrify.Core.ReferenceLoaders
 {
 	public class CastleLazyReferenceLoader : IReferenceLoader
 	{
@@ -43,6 +43,7 @@ namespace Petrify.Core.Proxies
 			Type _type;
 			object _id;
 			object _target;
+			readonly object _lock = new object();
 
 			public LazyLoadInterceptor (IRepository repository, Type type, object id)
 			{
@@ -55,10 +56,16 @@ namespace Petrify.Core.Proxies
 			{
 				if (_target == null)
 				{
-					// idealy what I would want to do here is to replace the target of
-					// invocation. However with castle this only appears possible with 
-					// interface proxies
-					_target = _repository.Load (_type, _id);
+					lock (_lock)
+					{
+						if (_target == null)
+						{
+							// idealy what I would want to do here is to replace the target of
+							// invocation. However with castle this only appears possible with 
+							// interface proxies
+							_target = _repository.Load (_type, _id);
+						}
+					}
 				}
 				invocation.ReturnValue = invocation.Method.Invoke (_target, invocation.Arguments);
 			}

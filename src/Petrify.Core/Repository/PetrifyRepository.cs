@@ -14,10 +14,10 @@
 //
 using System;
 using Petrify.Core.Inspectors;
-using Petrify.Core.Proxies;
 using System.Linq;
 using System.Collections.Generic;
 using Petrify.Core.TableMappers;
+using Petrify.Core.ReferenceLoaders;
 
 namespace Petrify.Core.Repository
 {
@@ -42,7 +42,7 @@ namespace Petrify.Core.Repository
 			TableMapper = new  AutoTableMapper ();
 			ReferenceLoader = new CastleLazyReferenceLoader (this);
 
-			_driver.Initialize (EntityInspector, ReferenceLoader); // driver needs to know what the root type is 
+			_driver.Initialize (EntityInspector, ReferenceLoader); 
 		}
 
 		private object SaveOrUpdate (object entity)

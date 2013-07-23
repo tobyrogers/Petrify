@@ -14,12 +14,15 @@
 //
 
 using System;
+using Petrify.Core.Inspectors;
+using System.Linq;
+using System.Collections.Generic;
+using Petrify.Core.TableMappers;
 
-namespace Petrify.Core.Proxies
+namespace Petrify.Core.ReferenceLoaders
 {
-	public class EntityReference
+	public interface IReferenceLoader
 	{
-		public object EntityId { get; set; }
-		public string EntityType { get; set; }
+		object LoadReference (Type type, object id);
 	}
 }

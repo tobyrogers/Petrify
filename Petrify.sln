@@ -202,5 +202,6 @@ Global
 		$0.XmlFormattingPolicy = $32
 		$32.inheritsSet = null
 		$32.scope = application/config+xml
+		version = 0.0.1-alpha
 	EndGlobalSection
 EndGlobal

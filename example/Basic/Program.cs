@@ -53,7 +53,7 @@ namespace Basic
 			var person = new Person () { FirstName = "David", LastName = "Cameron", Address = address };
 
 			// connect to the database
-			var database = new PetrifyRepository (new MongoDbDriver ("myDatabase"));
+			var database = new PetrifyRepository (new MongoDbDriver ("mongodb://localhost:27017/myDatabase"));
 
 			// save the person document
 			var id = database.Save (person);

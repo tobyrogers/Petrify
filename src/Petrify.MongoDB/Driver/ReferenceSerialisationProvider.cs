@@ -23,8 +23,9 @@ using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Bson.IO;
 using System.Linq;
 using MongoDB.Bson.Serialization.Conventions;
-using Petrify.Core.Proxies;
+using Petrify.Core.ReferenceLoaders;
 using Petrify.Core.Inspectors;
+using Petrify.Core.EntityReferences;
 
 namespace Petrify.MongoDB.Driver
 {

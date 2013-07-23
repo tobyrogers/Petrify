@@ -9,6 +9,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Petrify.Core</RootNamespace>
     <AssemblyName>Petrify.Core.Test</AssemblyName>
+    <ReleaseVersion>0.0.1-alpha</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -31,8 +32,8 @@
     <Reference Include="nunit.framework">
       <HintPath>..\..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
     </Reference>
-    <Reference Include="Castle.Core">
-      <HintPath>..\..\packages\Castle.Core.3.2.0\lib\net40-client\Castle.Core.dll</HintPath>
+    <Reference Include="Rhino.Mocks">
+      <HintPath>..\..\packages\RhinoMocks.3.6.1\lib\net\Rhino.Mocks.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -44,7 +45,7 @@
     <Compile Include="TestData\InvalidRoot.cs" />
     <Compile Include="Inspectors\ReferenceInspectorTest.cs" />
     <Compile Include="Inspectors\DefaultRootFinderTest.cs" />
-    <Compile Include="Proxies\CastleLazyReferenceLoaderTest.cs" />
+    <Compile Include="ReferenceLoaders\CastleLazyReferenceLoaderTest.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -59,6 +60,6 @@
   <ItemGroup>
     <Folder Include="Inspectors\" />
     <Folder Include="TestData\" />
-    <Folder Include="Proxies\" />
+    <Folder Include="ReferenceLoaders\" />
   </ItemGroup>
 </Project>

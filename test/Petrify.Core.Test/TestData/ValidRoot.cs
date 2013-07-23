@@ -18,7 +18,7 @@ namespace Petrify.Core.TestData
 {
 	public class ValidRoot
 	{
-		public Guid Id { get; set; }
+		public virtual Guid Id { get; set; }
 	}
 	
 }
