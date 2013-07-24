@@ -12,21 +12,30 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-
 using System;
 using Petrify.Core.Inspectors;
 using Petrify.Core.ReferenceLoaders;
-using System.Linq;
-using System.Collections.Generic;
-using Petrify.Core.TableMappers;
 
-namespace Petrify.Core.Repository
+namespace Petrify.Core.Drivers
 {
-	public interface IRepository
+	public interface IPetrifyDriver
 	{
-		T Load<T> (object id);
+		/// <summary>
+		/// Saves a new object to the database.
+		/// </summary>
+		void Save (Type defaultType, string collectionName, object entity);
 
-		object Load (Type type, object id);
+		/// <summary>
+		/// Updates an existing object in the database
+		/// </summary>
+		void Update (Type defaultType, string collectionName, object entity);
+
+		/// <summary>
+		/// Load the specified type and id.
+		/// </summary>
+		object Load (Type defaultType, string collectionName, object id);	
+
+		// shoud this just be a confriguration object?
+		void Initialize (IEntityInspector entityInspector, IReferenceLoader referenceLoader);
 	}
-	
 }

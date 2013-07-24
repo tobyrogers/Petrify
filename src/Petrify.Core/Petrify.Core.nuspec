@@ -9,7 +9,7 @@
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
     <projectUrl>https://github.com/tobyrogers/Petrify/wiki</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Base assemblies for the Petrify NoSQL persistence manager</description>
+    <description>Base assemblies for the Petrify NoSQL entity relationship manager</description>
     <dependencies>
       <dependency id="Castle.Core" version="3.2.0" />
     </dependencies> 

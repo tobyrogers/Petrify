@@ -18,11 +18,11 @@ using System.Linq;
 using System.Collections.Generic;
 using Petrify.Core.TableMappers;
 using Petrify.Core.ReferenceLoaders;
+using Petrify.Core.Drivers;
 
-namespace Petrify.Core.Repository
+namespace Petrify.Core
 {
-
-	public class PetrifyRepository : IRepository
+	public class Repository : IRepository
 	{
 		IPetrifyDriver _driver;
 
@@ -32,9 +32,7 @@ namespace Petrify.Core.Repository
 
 		public ITableMapper TableMapper { get; set; }
 
-		public bool LazyLoad { get; set; }
-
-		public PetrifyRepository (IPetrifyDriver driver)
+		public Repository (IPetrifyDriver driver)
 		{
 			_driver = driver;
 
@@ -72,6 +70,9 @@ namespace Petrify.Core.Repository
 
 		public object Save (object entity)
 		{
+			if (entity == null)
+				throw new ArgumentNullException ("entity");
+
 			EntityInspector.AssertIsEntity (entity.GetType ());
 
 			// now scan the document to find all referenced entities
@@ -105,6 +106,13 @@ namespace Petrify.Core.Repository
 
 		public object Load (Type type, object id)
 		{
+			if (type == null)
+				throw new ArgumentNullException ("type");
+
+			if (id == null)
+				throw new ArgumentNullException ("id");
+
+
 			var tableMapping = TableMapper.GetTableMapping (type);
 			return _driver.Load (tableMapping.BaseType, tableMapping.TableName, id);
 		}

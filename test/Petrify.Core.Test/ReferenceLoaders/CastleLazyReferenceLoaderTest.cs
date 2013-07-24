@@ -16,7 +16,6 @@ using System;
 using NUnit.Framework;
 using Petrify.Core.TestData;
 using Castle.DynamicProxy;
-using Petrify.Core.Repository;
 using Rhino.Mocks;
 
 namespace Petrify.Core.ReferenceLoaders

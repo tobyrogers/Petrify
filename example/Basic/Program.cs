@@ -13,12 +13,12 @@
 // limitations under the License.
 //
 using System;
-using Petrify.Core.Repository;
+using Petrify.Core;
 using Petrify.MongoDB.Driver;
 
 namespace Basic
 {
-	public class Entity
+	public abstract class Entity
 	{
 		public virtual Guid Id { get; set; }
 	}
@@ -46,22 +46,26 @@ namespace Basic
 		// initial idea about how I think this should work....
 		public static void Main (string[] args)
 		{
-			Console.WriteLine ("Hello World!");
+			Console.WriteLine ("Start");
 
 			// create an address and person aggrigate
-			var address = new Address () { Street = "10 Downing Street", Town = "London", Postcode = "SW1A 2AA" };
-			var person = new Person () { FirstName = "David", LastName = "Cameron", Address = address };
+			var address = new Address () { Street = "221B Baker Street", Town = "London", Postcode = "NW1 6XE" };
+			var person = new Person () { FirstName = "Sherlock", LastName = "Holmes", Address = address };
 
-			// connect to the database
-			var database = new PetrifyRepository (new MongoDbDriver ("mongodb://localhost:27017/myDatabase"));
+			// connect to the database in my local MongoDB instance
+			var repository = new RepositoryConfiguration ()
+				.ConnectTo.MongoDb ("mongodb://localhost:27017/myDatabase")
+				.BuildRepository ();
 
 			// save the person document
-			var id = database.Save (person);
+			var id = repository.Save (person);
 
-			// load the person document
-			var person2 = database.Load<Person> (id);
+			// load the person document (this will be a lazy loading proxy)
+			var person2 = repository.Load<Person> (id);
 
 			Console.WriteLine (person2.Address.Street);
+
+			Console.WriteLine ("End");
 		}
 	}
 }

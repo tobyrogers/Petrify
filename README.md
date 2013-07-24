@@ -3,9 +3,9 @@ Welcome to Petrify!
 
 Petrify is a .NET entity relationship manager for NoSQL databases.
 
-Based on the Aggregate pattern described in [Domain Driven Design] [DDD], Petrify identifies the root entity of an aggrigate, ensures that aggregates of different base types are persisted in separate collections, and enforces that nothing outside an aggregate boundary can hold a reference to anything inside, except to the root entity. Combined with the inherent properties of NoSQL databases, this enforces all the rules governing the implementation of aggregates as described in [Domain Driven Design] [DDD], Ch.6 p128.
+Based on the Aggregate pattern described in [Domain Driven Design] [DDD], Petrify identifies the root entity of an aggregate, ensures that aggregates of different base types are persisted in separate collections, and enforces that nothing outside an aggregate boundary can hold a reference to anything inside, except to the root entity. Combined with the inherent properties of NoSQL databases, this enforces all the rules governing the implementation of aggregates as described in [Domain Driven Design] [DDD], Ch.6 p128.
 
-Petrify also supports the lazy loading of associated aggregated (references).
+Petrify also supports the lazy loading of associated aggregates (references).
 
 [DDD]: http://dddcommunity.org/book/evans_2003/
 
